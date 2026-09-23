@@ -92,6 +92,7 @@ await page.getByRole("button", { name: "下一步", exact: true }).click();
 await page.getByRole("heading", { name: "构建并发布站点" }).waitFor();
 await page.getByRole("button", { name: "卡住了？问一下" }).click();
 assert(await page.getByPlaceholder(/卡在哪了/).isVisible(), "展开追问框");
+await page.locator(".dot.current.stuck").waitFor();
 await shot("5-step3-stuck");
 
 // 关掉再打开：总览显示「卡在 3/4」，点进去直接落在第 3 步

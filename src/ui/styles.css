@@ -102,7 +102,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--f
 /* 步骤卡片 */
 .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 26px 24px 20px; }
 .step-title { font-size: 24px; font-weight: 500; line-height: 1.35; margin: 0 0 12px; letter-spacing: 0.01em; }
-.step-body { color: var(--muted); }
+.step-body { color: var(--muted); line-height: 1.8; }
 .step-note { margin-top: 14px; font-size: 14px; color: var(--muted); }
 .note-label { display: block; font-size: 12px; color: var(--faint); margin-bottom: 2px; }
 
@@ -129,7 +129,8 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--f
 /* Markdown */
 .md > :first-child { margin-top: 0; }
 .md > :last-child { margin-bottom: 0; }
-.md p, .md ul, .md ol { margin: 8px 0; }
+.md p, .md ul, .md ol { margin: 12px 0; }
+.md li + li { margin-top: 6px; }
 .md ul, .md ol { padding-left: 20px; }
 .md h1, .md h2, .md h3, .md h4 { font-size: 15px; margin: 14px 0 4px; color: var(--text); }
 .md strong { color: var(--text); font-weight: 600; }
