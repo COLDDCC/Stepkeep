@@ -96,6 +96,18 @@ export function TaskView({ taskId, settings, go }: { taskId: string; settings: S
           </div>
           <h3 class="card-title">{step.title}</h3>
           <Markdown source={step.body} />
+          {!!step.cautions?.length && (
+            <div class="cautions">
+              <strong>注意</strong>
+              <ul>
+                {step.cautions.map((c, i) => (
+                  <li key={i}>
+                    <Markdown source={c} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {step.doneCriteria && (
             <div class="criteria">
               <strong>完成标准</strong>

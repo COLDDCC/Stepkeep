@@ -32,6 +32,7 @@ export function ImportView({ settings, go }: { settings: Settings; go: (r: Route
         title: s.title,
         body: s.body,
         doneCriteria: s.done_criteria,
+        cautions: s.cautions,
         status: "todo",
       }));
       const task: Task = {

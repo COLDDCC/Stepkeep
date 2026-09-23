@@ -43,6 +43,17 @@ npm test           # 单元测试：进度计算、IndexedDB、追问上下文�
 npm run e2e        # 冒烟测试：Chromium 加载 dist/，mock API 走完整流程（需先 build）
 ```
 
+### 用真实教程调拆解效果
+
+`cases/` 里放真实用过的教程原文。用真实模型试拆一篇，结果打印到终端：
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-... npm run try -- cases/reddit-signup.md
+ANTHROPIC_API_KEY=sk-ant-... npm run try -- cases/reddit-signup.md claude-sonnet-5
+```
+
+脚本和扩展用的是同一份拆解提示词（`src/prompts.ts`），改完提示词直接重跑就能对比。
+
 `npm run e2e` 可用 `CHROMIUM_PATH` 指定浏览器路径，`SHOTS_DIR` 保存每一步截图。
 
 ## 结构

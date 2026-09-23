@@ -8,8 +8,9 @@
     "jsxImportSource": "preact",
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
-    "types": ["chrome", "vite/client"]
+    "types": ["chrome", "vite/client", "node"]
   },
-  "include": ["src", "tests", "vite.config.ts"]
+  "include": ["src", "tests", "scripts", "vite.config.ts"]
 }

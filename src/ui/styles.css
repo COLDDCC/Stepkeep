@@ -120,6 +120,9 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); ou
 .seg.stuck.on { background: var(--stuck-bg); color: var(--stuck); font-weight: 600; }
 .seg.done.on { background: var(--done-bg); color: var(--done); font-weight: 600; }
 .criteria { display: flex; flex-direction: column; gap: 2px; background: var(--done-bg); border-radius: 8px; padding: 8px 10px; margin-top: 10px; font-size: 13px; }
+.cautions { background: var(--stuck-bg); border-left: 3px solid var(--stuck); border-radius: 8px; padding: 8px 10px; margin-top: 10px; font-size: 13px; }
+.cautions strong { color: var(--stuck); font-size: 12px; }
+.cautions ul { margin: 2px 0 0; padding-left: 18px; }
 .criteria strong { color: var(--done); font-size: 12px; }
 
 /* Markdown */

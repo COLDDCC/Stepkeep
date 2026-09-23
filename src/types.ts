@@ -20,6 +20,8 @@ export interface Step {
   /** Markdown 正文，代码块以 fenced code 形式内嵌，渲染时带复制按钮 */
   body: string;
   doneCriteria: string;
+  /** 做这一步时必须知道的坑，例如「用户名注册后不能改」；v0.1 早期数据没有这个字段 */
+  cautions?: string[];
   status: StepStatus;
 }
 

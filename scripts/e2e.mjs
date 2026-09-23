@@ -20,13 +20,14 @@ const extId = sw.url().split("/")[2];
 const decomposition = {
   title: "把个人网站部署到 Cloudflare Pages",
   steps: [
-    { title: "安装 Wrangler CLI", body: "在终端运行：\n\n```bash\nnpm install -g wrangler\n```", done_criteria: "`wrangler --version` 输出版本号" },
-    { title: "登录 Cloudflare 账号", body: "```bash\nwrangler login\n```\n浏览器会弹出授权页，点 **Allow**。", done_criteria: "终端显示 Successfully logged in" },
-    { title: "构建并发布站点", body: "```bash\nnpm run build\nwrangler pages deploy dist\n```", done_criteria: "终端输出 *.pages.dev 地址并能打开" },
+    { title: "安装 Wrangler CLI", body: "在终端运行：\n\n```bash\nnpm install -g wrangler\n```", done_criteria: "`wrangler --version` 输出版本号", cautions: ["需要 Node.js 18 以上"] },
+    { title: "登录 Cloudflare 账号", body: "```bash\nwrangler login\n```\n浏览器会弹出授权页，点 **Allow**。", done_criteria: "终端显示 Successfully logged in", cautions: [] },
+    { title: "构建并发布站点", body: "```bash\nnpm run build\nwrangler pages deploy dist\n```", done_criteria: "终端输出 *.pages.dev 地址并能打开", cautions: [] },
     {
       title: "（可选）绑定自定义域名",
       body: "在 Pages 项目 → Custom domains 添加域名。\n\n- **域名在 Cloudflare**：自动添加 CNAME\n- **域名在别处**：手动加 CNAME 指向 `xxx.pages.dev`",
       done_criteria: "访问自定义域名能看到站点",
+      cautions: [],
     },
   ],
 };
@@ -75,6 +76,7 @@ await page.getByPlaceholder(/粘贴 AI 长回复/).fill("教程原文：先装 w
 await shot("2-import");
 await page.getByRole("button", { name: "拆成步骤" }).click();
 await page.getByRole("heading", { name: "安装 Wrangler CLI" }).waitFor();
+assert(await page.locator(".cautions").getByText("需要 Node.js 18 以上").isVisible(), "显示注意事项");
 await shot("3-step1");
 
 await page.getByPlaceholder(/卡在哪了/).fill("npm install -g 报 EACCES 权限错误");

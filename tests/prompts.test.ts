@@ -8,6 +8,12 @@ const steps: Step[] = [0, 1].map((index) => ({
 }));
 
 describe("buildQaRequest", () => {
+  it("当前步骤的注意事项带进追问上下文", () => {
+    const withCaution = { ...steps[0], cautions: ["用户名注册后不能改"] };
+    const { messages } = buildQaRequest(task, steps, withCaution, [{ role: "user", content: "?", at: 0 }]);
+    expect(messages[0].content).toContain("- 用户名注册后不能改");
+  });
+
   it("原文放 system 并打缓存断点，当前步骤只拼在线程第一条提问前", () => {
     const { system, messages } = buildQaRequest(task, steps, steps[1], [
       { role: "user", content: "报错了", at: 0 },
@@ -24,7 +30,7 @@ describe("buildQaRequest", () => {
 
 describe("DecompositionSchema", () => {
   it("校验拆解结果结构", () => {
-    const ok = { title: "T", steps: [{ title: "a", body: "b", done_criteria: "c" }] };
+    const ok = { title: "T", steps: [{ title: "a", body: "b", cautions: [], done_criteria: "c" }] };
     expect(DecompositionSchema.safeParse(ok).success).toBe(true);
     expect(DecompositionSchema.safeParse({ title: "T", steps: [{ title: "a" }] }).success).toBe(false);
   });

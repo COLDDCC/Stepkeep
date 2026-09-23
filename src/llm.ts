@@ -1,12 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
-import {
-  buildQaRequest,
-  DECOMPOSE_SYSTEM,
-  DecompositionSchema,
-  decomposeUserMessage,
-  type Decomposition,
-} from "./prompts";
+import { buildQaRequest, DecompositionSchema, decomposeRequest, fallbackParams, type Decomposition } from "./prompts";
 import type { Settings } from "./settings";
 import type { ChatMessage, Step, Task } from "./types";
 
@@ -16,13 +9,6 @@ function client(settings: Settings) {
   if (!settings.apiKey) throw new LlmError("还没有填 API key，先到「设置」里填一下。");
   // 自带 key、直接从扩展页面请求 api.anthropic.com
   return new Anthropic({ apiKey: settings.apiKey, dangerouslyAllowBrowser: true });
-}
-
-/** Opus 5 被安全分类器拒答时，服务端自动换模型重跑 */
-function fallbackParams(model: string) {
-  return model === "claude-opus-5"
-    ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
-    : {};
 }
 
 function checkStop(msg: Anthropic.Beta.BetaMessage) {
@@ -50,17 +36,9 @@ export async function decompose(
   onProgress: (chars: number) => void,
   signal?: AbortSignal,
 ): Promise<Decomposition> {
-  const stream = client(settings).beta.messages.stream(
-    {
-      model: settings.model,
-      max_tokens: 32000,
-      system: DECOMPOSE_SYSTEM,
-      messages: [{ role: "user", content: decomposeUserMessage(sourceText, sourceUrl) }],
-      output_config: { format: betaZodOutputFormat(DecompositionSchema) },
-      ...fallbackParams(settings.model),
-    },
-    { signal },
-  );
+  const stream = client(settings).beta.messages.stream(decomposeRequest(settings.model, sourceText, sourceUrl), {
+    signal,
+  });
   let chars = 0;
   stream.on("text", (delta) => onProgress((chars += delta.length)));
   const msg = await stream.finalMessage();
