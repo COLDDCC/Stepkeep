@@ -66,10 +66,7 @@ export function StepChat({ settings, task, steps, step, onAsk, onSizeChange }: P
 
   return (
     <section class="chat">
-      <div class="chat-head">
-        <strong>追问这一步</strong>
-        <span class="muted">问答只挂在第 {step.index + 1} 步下，不打乱主线</span>
-      </div>
+      <div class="chat-head">关于第 {step.index + 1} 步的追问，不会打乱步骤</div>
 
       {messages.map((m, i) => (
         <div key={i} class={`msg ${m.role}`}>
@@ -105,11 +102,11 @@ export function StepChat({ settings, task, steps, step, onAsk, onSizeChange }: P
           }}
         />
         {streaming !== null ? (
-          <button class="btn" onClick={() => abort.current?.abort()}>
+          <button class="btn-outline" onClick={() => abort.current?.abort()}>
             停止
           </button>
         ) : (
-          <button class="btn primary" disabled={!draft.trim()} onClick={send}>
+          <button class="btn-solid" disabled={!draft.trim()} onClick={send}>
             发送
           </button>
         )}

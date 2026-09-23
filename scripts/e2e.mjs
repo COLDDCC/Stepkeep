@@ -76,20 +76,22 @@ await page.getByPlaceholder(/粘贴 AI 长回复/).fill("教程原文：先装 w
 await shot("2-import");
 await page.getByRole("button", { name: "拆成步骤" }).click();
 await page.getByRole("heading", { name: "安装 Wrangler CLI" }).waitFor();
-assert(await page.locator(".cautions").getByText("需要 Node.js 18 以上").isVisible(), "显示注意事项");
+assert(await page.locator(".step-note").getByText("需要 Node.js 18 以上").isVisible(), "显示注意事项");
 await shot("3-step1");
 
+await page.getByRole("button", { name: "卡住了？问一下" }).click();
 await page.getByPlaceholder(/卡在哪了/).fill("npm install -g 报 EACCES 权限错误");
 await page.getByRole("button", { name: "发送" }).click();
 await page.getByText("免安装").waitFor();
-assert((await page.locator(".seg.stuck.on").count()) === 1, "追问后未开始的步骤自动标为卡住");
+assert((await page.locator(".dot.current.stuck").count()) === 1, "点「卡住了」后当前步骤标为卡住");
 await shot("4-asked");
 
-await page.getByRole("button", { name: "完成，下一步" }).click();
+await page.getByRole("button", { name: "下一步", exact: true }).click();
 await page.getByRole("heading", { name: "登录 Cloudflare 账号" }).waitFor();
-await page.getByRole("button", { name: "完成，下一步" }).click();
+await page.getByRole("button", { name: "下一步", exact: true }).click();
 await page.getByRole("heading", { name: "构建并发布站点" }).waitFor();
-await page.getByRole("button", { name: "卡住", exact: true }).click();
+await page.getByRole("button", { name: "卡住了？问一下" }).click();
+assert(await page.getByPlaceholder(/卡在哪了/).isVisible(), "展开追问框");
 await shot("5-step3-stuck");
 
 // 关掉再打开：总览显示「卡在 3/4」，点进去直接落在第 3 步
@@ -98,8 +100,12 @@ await page.getByText("卡在 3/4").waitFor();
 await shot("6-overview");
 await page.getByText(decomposition.title).click();
 await page.getByRole("heading", { name: "构建并发布站点" }).waitFor();
-// 第 1 步的追问线程还在
-await page.locator(".step-pill").first().click();
+// 「全部步骤」列表能跳转
+await page.getByRole("button", { name: "全部步骤" }).click();
+assert((await page.locator(".all-step").count()) === 4, "全部步骤列出 4 步");
+await page.getByRole("button", { name: "返回当前步骤" }).click();
+// 第 1 步的追问线程还在（有记录的步骤自动展开追问）
+await page.locator(".dots .dot").first().click();
 await page.getByText("免安装").waitFor();
 
 const qa = requests[1];
